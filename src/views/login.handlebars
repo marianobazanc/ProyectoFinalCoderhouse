@@ -1,0 +1,18 @@
+<main class="container d-flex flex-column align-items-center mt-5">
+    <h1>Iniciar Sesion</h1>
+    <form action="/api/sessions/login" method="POST" class="form-group w-50" >
+        <label>Email</label>
+        <input type="email" name="email" class="form-control">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control">
+        <button class="btn btn-success w-100 mt-3">Ingresar</button>
+        <a href="/register" class="btn btn-secondary w-100 mt-3">
+            Registrarse
+        </a>
+        <div class="mt-2 d-flex justify-content-between">
+            <a class="btn btn-dark mt-2" href="/api/sessions/github">Ingresar con Github</a>
+            <a class="btn btn-dark mt-2" href="/forgotPassword">Olvide mi contaseña</a>
+        </div>
+    </form>
+   
+</main>

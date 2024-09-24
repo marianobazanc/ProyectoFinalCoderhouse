@@ -1,0 +1,31 @@
+<main class="d-flex flex-column justify-content-center">
+    <div class=" d-flex justify-content-between">
+        <a href="/products" style="margin-top: 10px; margin-left: 30px" class="btn btn-dark">
+            Volver
+        </a>
+        <a href="/api/sessions/logout" style="margin-right: 30px; margin-top: 10px; " class="btn  btn-danger">
+            Logout
+        </a>
+    </div>
+    <hr />
+    <div class="container h-100">
+        <h2 class="text-center mb-3">Mi Ticket</h2>
+        <div class="row h-100">
+            <div class="col-md-6 my-auto ">
+                <div class="card bg-light mb-3">
+                    <div class="card-body">
+                        <p class=""><strong>Fecha de la compra:</strong> {{ticket.purchase_datetime}}</p>
+                        <p><strong>Total de compra:</strong> {{ticket.amount}}</p>
+                        <p><strong>Código del ticket:</strong> {{ticket.code}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+</main>
+<script>
+
+
+</script>

@@ -1,0 +1,29 @@
+<main class="container d-flex flex-column">
+      <div style="position: relative; height: 50px;">
+            <a href= "/products" style="display: inline-block;margin-top: 10px;" class="btn btn-dark">
+                Volver 
+            </a>
+            <a href="/api/sessions/logout"  style="position: absolute;  right: 0;margin-top: 10px; " class="btn  btn-danger">
+                Logout
+            </a> 
+      </div>
+    <hr/>
+    <h2 class="text-center">Formulario de Carga de Archivos</h2>
+    <h5>Subir imagen de perfil</h3>
+     <form action="/api/users/{{user._id}}/documents" method="POST" enctype="multipart/form-data" class="form-group w-50">
+        <input class="w-100" type="file" name="profile" id="profile" accept="image/*">
+        <button  class="btn btn-secondary w-25 mt-3" type="submit">Subir Perfil</button>
+    </form>
+<hr/>
+    <h5>Subir Documentos</h3>
+    <form method="POST" action="/api/users/{{user._id}}/documents" enctype="multipart/form-data" class="form-group w-50"> 
+        <input class="w-100" type="file" name="documents" id="documents" multiple>
+        <button class="btn btn-secondary w-25 mt-3">Subir Documentos</button>
+    </form>
+<hr/>
+    <h5>Subir imagen de producto</h3>
+     <form action="/api/users/{{user._id}}/documents" method="POST" enctype="multipart/form-data" class="form-group w-50">
+        <input class="w-100" type="file" name="products" id="products" accept="image/*">
+        <button  class="btn btn-secondary w-25 mt-3" type="submit">Subir Producto</button>
+    </form>
+</main>    

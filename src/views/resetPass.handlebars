@@ -1,0 +1,12 @@
+
+    <main class="container">
+        <h1>Resetear Contraseña</h1>
+        <form action="/api/sessions/resetPassword" method="POST"  class="form-group w-50" >
+            <input type="hidden" name="token" value="{{token}}">
+            <label>Nueva Contraseña</label>
+            <input type="password" name="passwordNew" class="form-control"  required>
+            <label>Confirmar Contraseña</label>
+            <input type="password" name="passwordConfirm" class="form-control"  required>
+            <button class="btn btn-outline-dark w-100 mt-3">Resetear Contraseña</button>
+        </form>
+    </main>

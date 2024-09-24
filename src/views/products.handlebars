@@ -1,0 +1,65 @@
+<main>
+    <div class="container"  >
+        <div style="position: relative; height: 50px;">
+            {{#if role}}
+                <a href="/adminproducts" style="display: inline-block; margin-top: 10px; " class="btn btn-dark">
+                    Admin Productos
+                </a>
+            {{/if}}
+            {{#if roleAdmin}}
+                <a href="/users" style="display: inline-block;margin-top: 10px; " class="btn btn-secondary">
+                    Admin Usuarios
+                </a>
+            {{/if}}
+            <a href= "/carts/{{cart}}" style="display: inline-block;margin-top: 10px;" class="btn btn-warning ">
+                Ver Carrito 
+            </a>
+            <a href= "/uploadfile" style="display: inline-block;margin-top: 10px;" class="btn btn-success">
+                Subir Archivos
+            </a>
+            <a href="/api/sessions/logout"  style="position: absolute;  right: 0;margin-top: 10px; " class="btn  btn-danger">
+                Logout
+            </a> 
+       </div>
+       <hr/>
+       <h2 class="text-center my-3">Productos</h2> 
+        <div class="container">
+            <div class="row d-flex flex-wrap justify-content-center">
+                {{#each productos}}
+                <div class="mb-4" style="width: 230px;">
+                    <div class="card h-100">
+                        <h5 class="card-header text-center">{{this.title}}</h5>
+                        <div class="card-body">
+                            <p class="card-text" style="font-size: 12px;"><strong>Descripción:</strong> {{this.description}}</p>
+                            <p class="card-text" style="font-size: 12px;"><strong>Precio:</strong> ${{this.price}}</p>
+                            <p class="card-text" style="font-size: 12px;"><strong>Stock:</strong> {{this.stock}}</p>
+                            <p class="card-text" style="font-size: 12px;"><strong>Categoría:</strong> {{this.category}}</p>
+                        </div>
+                        <form action="/products" method="post">
+                            <input type="text" name="prodId" value="{{this._id}}" style="display: none;">
+                            <input type="text" name="CartId" value="{{../cart}}" style="display: none;">
+                            <div class="d-flex align-items-center mb-2 me-2">
+                                <input style="height: 30px; width: 100px; margin-left: 15px" id="txtCantidad" type="number" name="txtCantidad"
+                                class="form-control rounded-0" />
+                                <button
+                                style="width: 100px; height: 30px; font-size: 12px; border: none; background-color: green; border-radius: 5px; color: white; margin-left: 15px">Agregar</button>
+                            </div>
+                            </form>
+                    </div>
+                 
+                </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <center >
+            {{#if hasPrevPage}}
+                <a href="/products?nropage={{prevPage}}">Anterior</a>
+            {{/if}}
+            <label>{{page}}</label>
+            {{#if hasNextPage}}
+                <a href="/products?nropage={{nextPage}}">Siguente</a>
+            {{/if}}
+        </center>
+    </div>
+</main>

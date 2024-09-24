@@ -1,0 +1,93 @@
+<main>
+    <div class="ms-5">
+        <a href= "/products" style="display: inline-block;margin-top: 10px;" class="btn btn-dark">
+            Volver 
+        </a>
+        <a href="/api/sessions/logout"  style="position: absolute;  right: 0;margin-top: 10px; " class="me-5 btn  btn-danger">
+            Logout
+        </a> 
+    </div>
+    <hr/>
+    <div >
+       <h2 class="text-center">Mi carrito</h2>
+        <div class="container d-flex justify-content-center mt-3 h-100">
+             <div class="row h-100">
+                  <div style="width: 230px;" class="my-auto">
+                     <div class="card mb-3">
+                        {{#each productos}}
+                        <div class="card-header">Producto: {{this.product.title}}</div>
+                        <div class="card-body">
+                            <p style="font-size: 12px;">Descripción: {{this.product.description}}</p>
+                            <p style="font-size: 12px;">Precio: ${{this.product.price}}</p>
+                            <p style="font-size: 12px;">Código del producto: {{this.product.code}}</p>
+                            <p style="font-size: 12px;">CANTIDAD: {{this.quantity}}</p>     
+                            <button class="btn btn-outline-danger" onclick="eliminarProduct('{{this.product._id}}')"><strong> Eliminar Producto </strong></button>
+                        </div>
+                        {{/each}}
+                </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <ul id="messageLog"></ul>
+        </div>
+        <button id="terminar-compra" onclick="terminarCompra()" class="btn btn-success ms-5">Finalizar compra</button>
+    </div>
+     
+</main>
+<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
+<script>
+
+    function eliminarProduct(id) {
+        const currentUrl = window.location.href;
+        const parts = currentUrl.split('/');
+        const cartId = parts[parts.length - 1];
+       
+        if (!cartId) {
+            console.error('CID no encontrado en la URL');
+            return;
+        }
+        fetch(`/api/carts/${cartId}/product/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            window.location.reload()            
+        })
+    }
+
+    function terminarCompra() {
+        const currentUrl = window.location.href;
+        const parts = currentUrl.split('/');
+        const cartId = parts[parts.length - 1];
+       
+        if (!cartId) {
+            console.error('CID no encontrado en la URL');
+            return;
+        }
+     
+        fetch(`/api/carts/${cartId}/purchase`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+             Swal.fire({
+            icon: 'info',
+            title: 'Información',
+            text: data.message,
+        }).then(() => {
+                if (data.status === 'success' && data.ticketId) { 
+                    window.location.href = `/ticket/${data.ticketId}`; 
+                } else {
+                    console.error('Error en la compra:', data.message);
+                }
+                });
+        });
+    }
+</script>

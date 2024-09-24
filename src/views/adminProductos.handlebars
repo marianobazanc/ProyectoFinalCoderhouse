@@ -1,0 +1,82 @@
+<main>
+    <div style="position: relative; height: 50px; ">
+        <a href="/api/sessions/logout" style="position: absolute;  right: 0; margin-top: 10px;"
+            class="btn btn-danger me-5">
+            Logout
+        </a>
+    </div>
+    <div class="container">
+        <div class="row d-flex flex-wrap">
+            <div class="col-md-4 my-auto">
+                <h1 class="h3 mb-5">Agregar Producto</h1>
+                <form id="noteForm" class="card card-body " action="/api/products" method="POST">
+                    <input id="title" type="text" name="title" placeholder="Escribe tu titulo"
+                        class="form-control  mb-3" />
+                    <input id="description" type="text" name="description" placeholder="Descripcion"
+                        class="form-control  mb-3" />
+                    <input id="price" type="text" name="price" placeholder="Precio" class="form-control  mb-3" />
+                    <input id="code" type="text" name="code" placeholder="Code" class="form-control  mb-3" />
+                    <input id="stock" type="number" name="stock" placeholder="Stock" class="form-control  mb-3" />
+                    <input id="category" type="text" name="category" placeholder="Categoria"
+                        class="form-control  mb-3" />
+                    <button id="btnGuardar" class="btn btn-success ">Guardar</button>
+                </form>
+            </div>
+
+            <div class="col-md-8 py-10" id="productos">
+                <h1 class="h3 mb-5 text-center">Productos</h1>
+                <div class="mb-3 d-flex flex-wrap gap-5">
+                    {{#each productos}}
+                    <div class="card d-flex flex-wrap" style="width: 230px;">
+                        <div class="card-body">
+                            <p style="font-size: 13px"><strong>Codigo:</strong> {{this._id}}</p>
+                            <p style="font-size: 13px"><strong>Titulo:</strong> {{this.title}}</p>
+                            <p style="font-size: 13px"><strong>Descripcion: </strong>{{this.description}}</p>
+                            <button class="btn btn-outline-danger" style="font-size: 13px;"
+                                onclick="eliminarProduct('{{this._id}}')"><strong> Eliminar Producto </strong></button>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+</main>
+
+<script src=" https://cdn.jsdelivr.net/npm/sweetalert2@11.7.1/dist/sweetalert2.all.min.js "></script>
+<script>
+    function eliminarProduct(id) {
+        fetch(`/api/products/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(res => {
+                return res.json()
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Información',
+                        text: data.payload,
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.error || 'Error desconocido al eliminar el producto.',
+                    });
+                }
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2400)
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: error,
+                });
+            })
+    }
+</script>

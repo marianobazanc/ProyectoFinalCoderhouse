@@ -1,0 +1,8 @@
+node_modules/
+/src/upload/
+dist/
+build/
+.cache/
+.env
+package-lock.json
+errors.log

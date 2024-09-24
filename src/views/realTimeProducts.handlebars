@@ -1,0 +1,90 @@
+<main>
+     <div style="position: relative; height: 50px;">
+            <a href= "/products" style="display: inline-block;margin-top: 10px;" class="btn btn-outline-dark">
+                Volver 
+            </a>
+            <a href="/api/sessions/logout"  style="position: absolute;  right: 0;margin-top: 10px; " class="btn  btn-outline-dark">
+                Logout
+            </a> 
+      </div>
+      <div class="container h-100" >
+        <div class="row h-100">
+            <div class="col-md-4 my-auto">
+            <form id="noteForm" class="card card-body rounded-0">
+                <h1 class="h3 mb-5">Agregar Producto</h1>
+                <input id="title" type="text"  name="title" placeholder="Escribe tu titulo" class="form-control rounded-0 mb-3" />
+                <input id="descripcion" type="text"  name="descripcion" placeholder="Descripcion" class="form-control rounded-0 mb-3" />
+                <input id="precio" type="number"  name="precio" placeholder="Precio" class="form-control rounded-0 mb-3" />
+                <input id="code" type="text"  name="code" placeholder="Code" class="form-control rounded-0 mb-3" />
+                <input id="stock" type="number"  name="code" placeholder="stock" class="form-control rounded-0 mb-3" />
+                <input id="category" type="text"  name="code" placeholder="Categoria" class="form-control rounded-0 mb-3" />
+                <button id="btnGuardar" class="btn btn-dark rounded-0">Guardar</button>
+            </form>
+            </div>
+            <div class="col-md-8 py-3" id="productos">
+                <h1 class="h3 mb-5">Lista de Productos</h1>
+                <ul id="messageLog"></ul>
+            </div>
+            
+        </div>
+           <div class="row h-100">
+            <div class="col-md-4 my-auto">
+            <form id="noteForm" class="card card-body rounded-0">
+                <h1 class="h3 mb-5">Eliminar Producto</h1>
+                <input id="id" type="text"  name="id" placeholder="Ingrese ID a eliminar" class="form-control rounded-0 mb-3" />
+                <button id="btnElminar" class="btn btn-dark rounded-0">Eliminar</button>
+            </form>
+            </div>
+        </div>
+        </div>
+</main>
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+  const socket = io()
+
+  const txtTitle = document.querySelector("#title");
+  const txtDescripcion = document.querySelector("#descripcion");
+  const txtPrecio = document.querySelector("#precio");
+  const txtCode = document.querySelector("#code");
+  const txtCaterogy = document.querySelector("#category");
+  const txtStock = document.querySelector("#stock");
+
+  //Agregar Producto  
+  let btnAceptar = document.querySelector('#btnGuardar')
+  btnAceptar.addEventListener('click', evt => {
+         socket.emit('agregarProducto', {
+                    "title": txtTitle.value,
+                    "description": txtDescripcion.value,
+                    "price": txtPrecio.value,
+                    "thumbnail": "Sin imagen",
+                    "code": txtCode.value,
+                    "stock": txtStock.value,
+                    "status": 0,
+                    "category": txtCaterogy.value })
+        
+  })
+
+   //Eliminar Producto  
+   let btnEliminar = document.querySelector('#btnElminar')
+   const txtId = document.querySelector("#id");
+   btnEliminar.addEventListener('click', evt => {
+        evt.preventDefault(); 
+         
+        const trimmedId = txtId.value.trim(); 
+        if (trimmedId === "") {
+            console.error('ID is empty.');
+            return;
+        }
+         socket.emit('eliminarProducto', { id: trimmedId })
+  })
+
+    socket.on('cargarProductos', data => {
+        let log = document.getElementById('messageLog')
+        let messages = ''
+        data.forEach(message => {
+            messages += `<li> ID: ${message.id} -  ${message.title} -  ${message.description} </li><br>`
+        })
+        log.innerHTML = messages
+    })
+</script>

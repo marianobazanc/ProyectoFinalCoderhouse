@@ -1,0 +1,169 @@
+paths:
+  /api/carts/{cid}:
+     get:
+      summary: Obtiene todos los productos del carrito
+      tags:
+       - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: CID del Carrito
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: 'Los productos del carrito fueron obtenidos correctamente'
+          content:
+            application/json:
+               schema:
+                $ref: '#/components/schemas/Carts'
+        "500":
+          description: 'Error interno de servidor'
+     delete:
+      summary: Vacia todo el carrito seleccionado
+      tags:
+       - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: CID del Carrito
+          schema:
+            type: string 
+      responses:
+        "200":
+          description: 'El producto fue eliminado correctamente'
+        "404":
+          description: 'No existe el carrito'
+        "500":
+          description: 'Error interno de servidor'
+     put:
+      summary: Agregar muchos productos a un carrito
+      tags:
+       - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: CID del Carrito
+          schema:
+            type: string 
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/manyProducts' 
+      responses:
+        "200":
+          description: 'Los productos fueron agregados correctamente'
+        "404":
+          description: 'No existe el carrito o producto ingresado'
+        "500":
+          description: 'Error interno de servidor'
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto al carrito 
+      tags:
+       - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: CID del Carrito
+          schema:
+            type: string 
+        - name: pid
+          in: path
+          required: true
+          description: PID del prodcto a agregar
+          schema:
+            type: string  
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/addProduct' 
+      responses:
+        "200":
+          description: 'El producto fue agregado correctamente'
+        "404":
+          description: 'No existe el carrito o producto ingresado'
+        "500":
+          description: 'Error interno de servidor'
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+       - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: CID del Carrito
+          schema:
+            type: string 
+        - name: pid
+          in: path
+          required: true
+          description: PID del prodcto a agregar
+          schema:
+            type: string  
+      responses:
+        "200":
+          description: 'El producto fue eliminado correctamente'
+        "404":
+          description: 'No existe el carrito'
+        "500":
+          description: 'Error interno de servidor'
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autogenerado del carrito
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              productId:
+                type: ObjectId
+                description: ID del producto
+              quantity:
+                type: integer
+                description: Cantidad del producto
+      example:
+        _id: '6686dc042b28a1636f6b0d84'
+        products:
+          - product: '66a965b785b5fdf966d15718'
+            quantity: 2
+          - product: '66a965b785b5fdf966d15718'
+            quantity: 1
+  requestBodies:
+    addProduct:
+        type: object
+        properties:
+          quantity:
+            type: String
+            description: Cantidad a agrear al carrito      
+        example:
+          quantity: 20    
+    manyProducts:
+        type: array
+        properties:
+          products:
+            type: object
+            description: Producto a agregar
+          quantity:
+            type: String
+            description: Cantidad a agrear al carrito      
+        example:
+          products: 
+            - productId: '66a965b785b5fdf966d15718'
+              quantity: 21
+            - productId: '66a9653785b5fdf966d15709'
+              quantity: 12
